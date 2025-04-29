@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<link rel="icon" type="image/x-icon" href="/vite.svg">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Amazon Scraper</title>
+	<link rel="stylesheet" href="src/style.css">
+</head>
+<body>
+	<div class="container">
+		<h1>Amazon Product Scraper</h1>
+		<div class="search-container">
+			<input type="text" id="keyword" placeholder="Enter product name...">
+			<button id="scrapeBtn">Search</button>
+		</div>
+		<div class="loading">
+			<div class="spinner"></div>
+			<p>Searching products...</p>
+		</div>
+		<div id="results"></div>
+		<div class="load-more-container">
+			<button id="loadMoreBtn" class="load-more-btn">Load More Products</button>
+		</div>
+	</div>
+
+	<!-- Modal Structure -->
+	<div class="modal" id="messageModal">
+		<div class="modal-content">
+			<span class="close-modal">&times;</span>
+			<div class="modal-body">
+				<p id="modalMessage"></p>
+			</div>
+			<div class="modal-footer">
+				<button class="modal-btn" id="modalOkBtn">OK</button>
+			</div>
+		</div>
+	</div>
+
+	<script type="module" src="src/main.js"></script>
+</body>
+</html>
