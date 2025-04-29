@@ -16,17 +16,15 @@ app.use((req, res, next) => {
 
 app.get('/api/scrape', async (req, res) => {
   const keyword = req.query.keyword;
-  const page = parseInt(req.query.page) || 1;
-  const itemsPerPage = 20;
   
-  console.log('Looking for products:', keyword, 'Page:', page);
+  console.log('Looking for products:', keyword);
   
   if (!keyword) {
     return res.status(400).json({ error: 'Keyword is required' });
   }
 
   try {
-    const response = await axios.get(`https://www.amazon.com/s?k=${encodeURIComponent(keyword)}&page=${page}`, {
+    const response = await axios.get(`https://www.amazon.com/s?k=${encodeURIComponent(keyword)}`, {
       headers: {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
         'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7',

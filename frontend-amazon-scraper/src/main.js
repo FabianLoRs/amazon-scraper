@@ -34,45 +34,25 @@ document.getElementById('scrapeBtn').addEventListener('click', async () => {
         return;
     }
 
-    currentKeyword = keyword;
-    currentPage = 1;
-    allProducts = [];
-    await fetchProducts();
+    await fetchProducts(keyword);
 });
 
-document.getElementById('loadMoreBtn').addEventListener('click', async () => {
-  currentPage++;
-  await fetchProducts();
-});
-
-async function fetchProducts() {
+async function fetchProducts(keyword) {
   const loading = document.querySelector('.loading');
   const resultsDiv = document.getElementById('results');
-  const loadMoreBtn = document.getElementById('loadMoreBtn');
   
   try {
     loading.classList.add('active');
-    loadMoreBtn.classList.remove('visible');
 
-    const response = await fetch(`http://localhost:3000/api/scrape?keyword=${encodeURIComponent(currentKeyword)}&page=${currentPage}`);
+    const response = await fetch(`http://localhost:3000/api/scrape?keyword=${encodeURIComponent(keyword)}`);
     const data = await response.json();
 
     if (data.length === 0) {
-      if (currentPage === 1) {
-        resultsDiv.innerHTML = '<p class="no-results">No products found. Try a different search term.</p>';
-      } else {
-        loadMoreBtn.classList.remove('visible');
-      }
+      resultsDiv.innerHTML = '<p class="no-results">No products found. Try a different search term.</p>';
       return;
     }
 
-    allProducts = [...allProducts, ...data];
-
-    if (currentPage === 1) {
-      resultsDiv.innerHTML = '';
-    }
-
-    resultsDiv.innerHTML = allProducts.map(product => `
+    resultsDiv.innerHTML = data.map(product => `
       <div class="product">
         <img src="${product.imageUrl}" alt="${product.title}">
         <div class="product-content">
@@ -83,12 +63,6 @@ async function fetchProducts() {
       </div>
     `).join('');
 
-    // Show load more button if we got a full page of results
-    if (data.length >= 20) { // Assuming 20 items per page
-      loadMoreBtn.classList.add('visible');
-    } else {
-      loadMoreBtn.classList.remove('visible');
-    }
   } catch (error) {
     console.error('Error fetching data:', error);
     resultsDiv.innerHTML = '<p class="error">Failed to fetch products. Please try again later.</p>';
