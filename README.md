@@ -6,7 +6,7 @@ This project demonstrates a simple web scraper that fetches product information 
 
 ```plaintext
 amazon-scraper/
-├── backend/                     # Bun/Express API for scraping
+├── backend-amazon-scraper/      # Bun/Express API for scraping
 │   ├── node_modules/
 │   ├── .gitignore
 │   ├── bun.lock
@@ -18,6 +18,7 @@ amazon-scraper/
 ├── frontend-amazon-scraper/      # Vite/Vanilla JS frontend
 │   ├── node_modules/
 │   ├── public/
+│   |   ├──vite.svg
 │   ├── src/
 │   |   ├── main.js               # Frontend JavaScript logic
 │   |   ├── style.css 
