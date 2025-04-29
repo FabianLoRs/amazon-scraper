@@ -63,7 +63,7 @@ amazon-scraper/
     bun run dev
     # OR for production mode: bun run start
     ```
-    The backend API will start, typically on `http://localhost:3001`.
+    The backend API will start, typically on `http://localhost:3000`.
 
 2.  **Start the Frontend Development Server:**
     Open *another* terminal in the `frontend-amazon-scraper` directory:
@@ -71,7 +71,6 @@ amazon-scraper/
     cd frontend
     bun run dev
     # OR: npm run dev
-    # OR: yarn dev
     ```
     Vite will start the frontend dev server, typically on `http://localhost:5173`.
 
@@ -80,7 +79,7 @@ amazon-scraper/
 
 ## How to Use
 
-1.  Enter a search keyword (e.g., "wireless mouse", "coffee maker") into the input field.
+1.  Enter a search keyword (e.g., "wireless mouse", "AMD Ryzen") into the input field.
 2.  Click the "Scrape Amazon" button.
 3.  Wait for the backend to fetch and parse the results. A "Loading..." indicator will show.
 4.  The scraped product details will be displayed in a grid below the search bar.
@@ -95,8 +94,8 @@ amazon-scraper/
         [
           {
             "title": "Product Title Example",
-            "rating": 4.5, // number or null
-            "numReviews": 1234, // number or null
+            "rating": 4.5, // number or No rating available
+            "numReviews": 1234, // number or No reviews available
             "imageUrl": "https://..."
           },
           // ... more products
@@ -107,6 +106,4 @@ amazon-scraper/
 ## Important Considerations
 
 * **Amazon Blocking:** Amazon actively tries to prevent scraping. Your requests might be blocked (HTTP 4xx/5xx errors) if they detect bot-like behavior. Using valid User-Agent headers helps but isn't foolproof. More advanced techniques (proxies, CAPTCHA solving) are often needed for robust scraping, which are beyond the scope of this project.
-* **Selector Fragility:** The CSS selectors used in `backend/server.ts` to find product data are specific to Amazon's current HTML structure. **These will break** when Amazon updates its website design. You will need to inspect the new HTML source and update the selectors in the backend code (`document.querySelectorAll(...)` and `productElement.querySelector(...)` calls).
-* **Ethics and Legality:** Always respect website Terms of Service. Excessive scraping can overload servers. Use responsibly.
 * **Error Handling:** Basic error handling is implemented, but real-world scrapers need more robust error checking, retries, and logging.
