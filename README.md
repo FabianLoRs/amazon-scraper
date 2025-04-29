@@ -6,11 +6,14 @@ This project demonstrates a simple web scraper that fetches product information 
 
 ```plaintext
 amazon-scraper/
-├── backend/                      # Bun/Express API for scraping
+├── backend/                     # Bun/Express API for scraping
 │   ├── node_modules/
-│   ├── server.ts                 # The main API code
+│   ├── .gitignore
+│   ├── bun.lock
+│   ├── index.js                 # The main API code
 │   ├── package.json
-│   └── bun.lockb  
+│   ├── package-lock.json
+│   └── tsconfig.json 
 │
 ├── frontend-amazon-scraper/      # Vite/Vanilla JS frontend
 │   ├── node_modules/
