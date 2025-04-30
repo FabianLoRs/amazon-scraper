@@ -15,15 +15,18 @@ app.use((req, res, next) => {
 });
 
 app.get('/api/scrape', async (req, res) => {
+  // Get search keyword from query parameters
   const keyword = req.query.keyword;
   
   console.log('Looking for products:', keyword);
   
+  // Validate that keyword is provided
   if (!keyword) {
     return res.status(400).json({ error: 'Keyword is required' });
   }
 
   try {
+    // Make HTTP request to Amazon with custom headers to mimic a browser
     const response = await axios.get(`https://www.amazon.com/s?k=${encodeURIComponent(keyword)}`, {
       headers: {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
@@ -45,10 +48,11 @@ app.get('/api/scrape', async (req, res) => {
 
     console.log('Amazon Response Status:', response.status);
     
+    // Parse HTML response using JSDOM
     const dom = new JSDOM(response.data);
     const productList = [];
 
-    // Try different selectors
+    // Try different selectors to find product elements
     const selectors = [
       '[data-component-type="s-search-result"]',
       '.s-result-item',
@@ -66,6 +70,7 @@ app.get('/api/scrape', async (req, res) => {
 
     console.log('Number of products found:', products.length);
 
+    // Extract product information from each product element
     products.forEach(item => {
       // Try different selectors for title
       const titleElement = item.querySelector('h2 a span') || 
@@ -88,6 +93,7 @@ app.get('/api/scrape', async (req, res) => {
                           item.querySelector('img.s-product-image') ||
                           item.querySelector('img[src*="images/I"]');
 
+      // Extract text content from elements
       const title = titleElement ? titleElement.textContent.trim() : null;
       const rating = ratingElement ? ratingElement.textContent.trim() : null;
       const reviews = reviewsElement ? reviewsElement.textContent.trim() : null;
@@ -101,6 +107,7 @@ app.get('/api/scrape', async (req, res) => {
           imageUrl: imageUrl ? 'Image found' : 'No image'
         });
         
+        // Add product to the list
         productList.push({
           title,
           rating: rating ? rating : "No rating available",
@@ -111,6 +118,7 @@ app.get('/api/scrape', async (req, res) => {
     });
 
     console.log('Processed products:', productList.length);
+    // Send the list of products as JSON response
     res.json(productList);
   } catch (error) {
     console.error('Error during scraping:', error.message);
@@ -118,6 +126,7 @@ app.get('/api/scrape', async (req, res) => {
       console.error('Response status:', error.response.status);
       console.error('Response headers:', error.response.headers);
     }
+    // Send error response
     res.status(500).json({ 
       error: 'Failed to fetch data',
       details: error.message 
